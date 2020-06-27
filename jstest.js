@@ -15,6 +15,7 @@ let light
 let previous_brightness = 0
 let previous_pos = 0
 let mode = 'motorin'
+let power_on = true
 
 enable.hardwarePwmWrite(20000, 900 * 1000)
 
@@ -62,7 +63,7 @@ const main = async () => {
 
     const loop = async () => {
         const { value } = await readSensor(temp_sensor)
-        const pos = value * 104
+        const pos = value * 105 - 5
 
         if (mode === 'motorin') {
             if (closeEnough(pos, brightness)) {
@@ -125,16 +126,21 @@ const closeEnough = (n1, n2, use_rounding = false) => {
 
 const setLight = _.throttle(async (pos) => {
     console.log('setting light to ', pos)
-    if (pos < 1) {
-        await light.setPower(false, 0)
+    if (pos < 1 && power_on) {
+        power_on = false
+        await light.setPower(false, 500)
     }
-    else {
-        await light.setPower(true, 0)
+    else if (pos >= 1) {
+        if (!power_on) {
+            power_on = true
+            await light.setPower(true, 500)
+        }
+
+        await light.setHSV([20, 100 - (pos * 0.4), pos], 500).catch(err => {
+            console.log(err)
+        })
     }
-    await light.setBright(pos, 200).catch(err => {
-        console.log(err)
-    })
-}, 200)
+}, 600)
 
 console.log('starting...')
 

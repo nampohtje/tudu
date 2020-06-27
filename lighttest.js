@@ -16,7 +16,7 @@ look.on("detected",(light) =>
     //if something went wrong
     light.on("failed",(error) => { console.log(error); });
 
-    light.setBright(80).then(() =>
+    light.setBright(80, 2000).then(() =>
     {
         console.log("success");
     }).catch((error =>
