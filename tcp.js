@@ -1,5 +1,4 @@
 const Net = require('net');
-const { on } = require('process');
 
 const client = new Net.Socket();
 const server = new Net.Server();
