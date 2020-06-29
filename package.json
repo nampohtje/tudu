@@ -8,7 +8,8 @@
     "mcp-spi-adc": "^3.0.0",
     "node-ssdp": "^4.0.0",
     "node-yeelight-wifi": "^0.1.4",
-    "pigpio": "^3.0.0"
+    "pigpio": "^3.0.0",
+    "prettier": "^2.0.5"
   },
   "devDependencies": {},
   "scripts": {

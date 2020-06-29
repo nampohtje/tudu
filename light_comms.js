@@ -1,10 +1,3 @@
-/*
-    connect to light's tcp
-    create server
-    send music mode on
-    on connection to our server, disconnect to original tcp
-*/
-
 const Net = require('net');
 let client = new Net.Socket();
 
@@ -14,8 +7,6 @@ const sendMessage = (msg) => {
     return new Promise((resolve, reject) => {
         client.once('data', function (data) {
             resolve((data.toString()))
-            // console.log('Received: ' + data);
-            // client.destroy(); // kill client after server's response
         })
 
         setTimeout(() => {
@@ -29,7 +20,7 @@ const sendMessage = (msg) => {
 
 client.on('error', function (err) {
     console.log(`Client Error: ${err}`);
-    // closeAndRestart()
+    closeAndRestart()
 });
 
 const delay = async (ms) => {
@@ -51,7 +42,6 @@ const connect = async () => {
                 console.log('connected!');
                 resolve()
             }
-
         })
 
         setTimeout(() => {
@@ -96,9 +86,22 @@ const flash = async () => {
         // client.write(`{ "id": 1, "method": "set_bright", "params":[${state}, "smooth", 100]}\r\n`)
         await delay(250)
     }
+}
 
+const loop = () => {
+    /*
+        - Get touch sensor
+        - get location
+        - if not touching:
+            - get current brightness
+            - if brightness != location
+                - send to location
+            - else
+                - stop motor
 
-
+        - else
+            - send location to light
+    */
 }
 
 const closeAndRestart = async () => {
