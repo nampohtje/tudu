@@ -6,12 +6,16 @@ const button = new Gpio(4, {
     alert: true
 });
 
-// button.on('interrupt', (level) => {
-//     console.log(level)
-// });
+let touching = {
+    is: false
+}
 
 button.on('alert', (level) => {
-    console.log(level)
+    touching.is = !!level
 });
 
-setInterval(() => { })
+const isTouching = () => touching.is
+
+module.exports = {
+    isTouching
+}

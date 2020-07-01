@@ -4,6 +4,7 @@
   "description": "",
   "main": "jstest.js",
   "dependencies": {
+    "color": "^3.1.2",
     "lodash": "^4.17.15",
     "mcp-spi-adc": "^3.0.0",
     "node-ssdp": "^4.0.0",

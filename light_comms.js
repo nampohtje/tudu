@@ -1,9 +1,12 @@
+const Color = require('color')
 const Net = require('net');
 let client = new Net.Socket();
 
 const { getLightStatus } = require('./discovery')
+const { goUp, goDown, stahp } = require('./motor')
 
 const sendMessage = (msg) => {
+    const now = Date.now()
     return new Promise((resolve, reject) => {
         client.once('data', function (data) {
             resolve((data.toString()))
@@ -15,6 +18,41 @@ const sendMessage = (msg) => {
 
         client.write(msg)
     })
+
+}
+
+const setBrightness = async (b, smooth) => {
+    const hsv_arr = [10, 100 - (b * 0.4), b]
+
+    let color = Color.hsv(hsv_arr);
+
+    let hue = color.hue();
+    let sat = color.saturationv();
+    let bright = color.value();
+
+    //"hue", "sat", "effect", "duration"
+    let hsv_params =
+        [
+            hue,
+            sat,
+            `"smooth"`,
+            smooth
+        ];
+
+    let bright_params =
+        [
+            bright,
+            `"smooth"`,
+            smooth
+        ];
+
+    const hsv_msg = `{ "id": 1, "method": "set_hsv", "params":[${hsv_params.join(',')}]}\r\n`
+    const bright_msg = `{ "id": 1, "method": "set_bright", "params":[${bright_params.join(',')}]}\r\n`
+    console.log(hsv_msg);
+    console.log(bright_msg);
+
+    const ret = await Promise.all([sendMessage(hsv_msg), sendMessage(bright_msg)])
+    console.log(ret);
 
 }
 
@@ -88,21 +126,6 @@ const flash = async () => {
     }
 }
 
-const loop = () => {
-    /*
-        - Get touch sensor
-        - get location
-        - if not touching:
-            - get current brightness
-            - if brightness != location
-                - send to location
-            - else
-                - stop motor
-
-        - else
-            - send location to light
-    */
-}
 
 const closeAndRestart = async () => {
 
@@ -118,13 +141,19 @@ const closeAndRestart = async () => {
     await flash()
 }
 
-(async () => {
-    try {
-        await connect()
-        await flash()
-    }
-    catch (e) {
-        console.log(e)
-    }
+// (async () => {
+//     try {
+//         await connect()
+//         await flash()
+//     }
+//     catch (e) {
+//         console.log(e)
+//     }
 
-})()
+// })()
+
+module.exports = {
+    getLightStatus,
+    connect,
+    setBrightness
+}
