@@ -21,7 +21,7 @@ const readSensor = async () => {
                 reject(err)
             }
             else {
-                resolve(reading.value)
+                resolve(1 - reading.value)
             }
         })
     })

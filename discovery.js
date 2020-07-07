@@ -2,7 +2,7 @@ const PORT = 1982;
 
 const ssdp = require("node-ssdp");
 
-const my_ssdp = new ssdp.Client({ ssdpPort: PORT });
+let my_ssdp = new ssdp.Client({ ssdpPort: PORT });
 
 const getLightStatus = () => {
     return new Promise((resolve, reject) => {
@@ -14,8 +14,10 @@ const getLightStatus = () => {
         my_ssdp.search('wifi_bulb');
 
         setTimeout(() => {
+        	//my_ssdp = new ssdp.Client({ ssdpPort: PORT })
+        	//process.exit(1)
             reject(new Error('ssdp timeout'))
-        }, 3000)
+        }, 2000)
     })
 }
 
