@@ -72,7 +72,7 @@ const getRealBright = async () => {
     })
 
     real_brightness = status.POWER === 'off' ? 0 : +status.BRIGHT
-    console.log({real_brightness})
+//     console.log({real_brightness})
 }
 
 
@@ -85,7 +85,7 @@ const discoverForever = async () => {
         })
 
         real_brightness = status.POWER === 'off' ? 0 : +status.BRIGHT
-        console.log('got', real_brightness)
+//         console.log('got', real_brightness)
         await delay(200)
     }
 }
