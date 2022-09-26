@@ -10,7 +10,7 @@
     "node-ssdp": "^4.0.0",
     "node-yeelight-wifi": "^0.1.4",
     "pigpio": "^3.0.0",
-    "pm2": "^4.4.0",
+    "pm2": "^5.2.0",
     "prettier": "^2.0.5"
   },
   "devDependencies": {},
